@@ -34,7 +34,18 @@ namespace twozerofoureight
             // initialize board
             HandleChanges();
         }
-
+        public int Getscore()
+        {
+            int sum = 0;
+            for (int i=0;i<boardSize;i++)
+            {
+                for(int j = 0; j < boardSize; j++)
+                {
+                    sum = sum + board[i, j];
+                }
+            }
+            return sum;
+        }
         public int[,] GetBoard()
         {
             return board;
@@ -53,7 +64,118 @@ namespace twozerofoureight
                 }
             }
         }
+        public bool Checkwingame()
+        {
+            bool GG = false;
+            for (int i = 0; i < boardSize; i++)
+            {
+                for (int j = 0; j < boardSize; j++)
+                {
+                    if (board[i, j] == 2048)
+                    {
+                        GG = true;
+                    }
+                }
+            }
+           
+            return GG;
+        }
+        public bool Checklosegame()
+        {
+            int count = 0;
+            bool GG = false;
+            for (int i = 0; i < boardSize; i++)
+            {
+                for (int j = 0; j < boardSize; j++)
+                {
+                    if (board[i, j] != 0)
+                    {
+                        count=count+1;
+                    }
+                }
+            }
+            if(count == 16)
+            {
 
+                for (int i = 0; i < boardSize; i++)
+                {
+                    for (int j = 0; j < boardSize; j++)
+                    {
+                        if (board[i, j] != 0)
+                        {
+                            if (i == 0 && j == 0) //#1
+                            {
+                                if (board[i, j] == board[i, j + 1] || board[i, j] == board[i + 1, j])
+                                {
+                                return false;
+                                }
+                            }
+                            else if (i == 0 && j != 0 && j != boardSize - 1) //#2,3
+                            {
+                                if (board[i, j] == board[i, j - 1] || board[i, j] == board[i, j + 1] || board[i, j] == board[i + 1, j])
+                                {
+                                return false;
+                                }
+                            }
+                            else if (i == 0 && j == boardSize - 1) //#4
+                            {
+                                if (board[i, j] == board[i, j - 1] || board[i, j] == board[i + 1, j])
+                                {
+                                return false;
+                                }
+                            }
+                       
+                            else if (j == 0 && i != 0 && i != boardSize - 1) //#1
+                            {
+                                if (board[i, j] == board[i + 1, j] || board[i, j] == board[i, j + 1] || board[i, j] == board[i - 1, j])
+                                {
+                                return false;
+                                }
+                            }
+                       
+                            else if (j == boardSize - 1 && i != 0 && i != boardSize - 1) //#4
+                            {
+                                if (board[i, j] == board[i + 1, j] || board[i, j] == board[i, j - 1] || board[i, j] == board[i - 1, j])
+                                {
+                                return false;
+                                }
+                            }
+                       
+                            else if (i == boardSize - 1 && j == 0)
+                            {
+                                if (board[i, j] == board[i, j + 1] || board[i, j] == board[i - 1, j])
+                                {
+                                return false;
+                                }
+                            }
+                            else if (i == boardSize - 1 && j != 0 && j != boardSize - 1) //#2,3
+                            {
+                                if (board[i, j] == board[i, j - 1] || board[i, j] == board[i, j + 1] || board[i, j] == board[i - 1, j])
+                                {
+                                return false;
+                                }
+                            }
+                            else if (i == boardSize - 1 && j == boardSize - 1) //#1
+                            {
+                                if (board[i, j] == board[i, j - 1] || board[i, j] == board[i - 1, j])
+                                {
+                                return false;
+                                }
+                            }
+                            else
+                            {
+                                if (board[i, j] == board[i, j - 1] || board[i, j] == board[i, j + 1] || board[i, j] == board[i + 1, j] || board[i, j] == board[i - 1, j])
+                                {
+                                return false;
+                                }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
         // Perform shift and merge to the left of the given array.
         protected bool ShiftAndMerge(int[] buffer)
         {
